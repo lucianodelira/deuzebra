@@ -3,71 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>Zebrinha – Caça-Níquel</title>
-<!-- Ícone do site -->
+  <!-- Ícone do site -->
   <link rel="icon" type="image/png" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhD8ydFHUvoNrnZ19EcsyBjG5diG1coCqvw6XczPcGdUaTLEw9v6CDClvdhbg2JQVDXvGCRd_wjwj3t3ZY723fZRWllz4gbEn_mbHO7QCdtNC_6rj3rDVQdX3tQy9jvJYtB1lN9mv73QA5osnh9hlg4qPqkdd3JqI6S9XFSSRQbzxDOGg4-hlzKrtcH_4ad/s200/ChatGPT%20Image%201%20de%20jul.%20de%202025,%2000_34_37.png">
 
   <!-- SEO -->
   <meta name="description" content="Jogo online divertido da Zebrinha – aposte, jogue e ganhe! Inspirado em caça-níqueis temáticos com personagens e ícones do futebol.">
   <meta name="keywords" content="zebrinha, jogo da zebrinha, caça-níquel, jogo online, aposta online, futebol, copa do brasil, slot game, jogo grátis, zebra game, apostas">
   <meta name="author" content="Zebrinha – Caça-Níquel">
-</head>
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
-
-
-
-<link rel="stylesheet" href="MPayment/Styles.css">
-
-
-
-
-
-
-
-
-
-
-
+  <link rel="stylesheet" href="MPayment/Styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.7.0/css/flag-icon.min.css">
- <style>
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(#74d300, #179800);
-      font-family: sans-serif;
-      text-align: center;
-    }
-    #app {
-  max-width: 480px;
-  margin: 10px auto;
-  background: #152A3E;
-  border-radius: 05px;
-  overflow: hidden;
-  box-shadow: 0 0 25px #000;
-}
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      background: #222;
-      color: #fff;
-      font-weight: bold;
-      font-size: 12px;
-      padding: 6px 10px;
-    }
-    .top-bar span {
-      background: #444;
-      padding: 3px 6px;
-      border-radius: 5px;
-      color: yellow;
-    }
-  #board {
-      display: grid;
-      grid-template-areas:
+
+  <style>
+    * { box-sizing: border-box; }
+    body { margin:0; padding:0; background:linear-gradient(#74d300,#179800); font-family:sans-serif; text-align:center; }
+    #app { max-width:480px; margin:10px auto; background:#152A3E; border-radius:5px; overflow:hidden; box-shadow:0 0 25px #000; }
+    .top-bar { display:flex; justify-content:space-between; background:#222; color:#fff; font-weight:bold; font-size:12px; padding:6px 10px; }
+    .top-bar span { background:#444; padding:3px 6px; border-radius:5px; color:yellow; }
+    #board { display:grid; grid-template-areas:
         "tl t1 t2 t3 t4 t5 t6 tr"
         "l1 btn btn btn btn btn btn r1"
         "l2 btn btn btn btn btn btn r2"
@@ -75,311 +29,88 @@
         "l4 btn btn btn btn btn btn r4"
         "l5 btn btn btn btn btn btn r5"
         "bl b6 b5 b4 b3 b2 b1 br";
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-
-    .slot {
-      background: white;
-      border: 2px solid #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 49px;
-      height: 49px;
-    }
-    .center-image {
-      grid-area: btn;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: black;
-    }
-.center-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-
-
-    #btnPlay {
-      margin-top: 10px;
-      width: 100%;
-      height: 40px;
-      background: red;
-      border: none;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 8px;
-    }
-    #btnPlay:active {
-      animation: pulse 0.2s;
-    }
-    #menu {
-      background: #111;
-      color: white;
-      padding: 8px;
-    }
-    .flag-img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-    .blink {
-  animation: brilho 0.2s infinite alternate, pulseBorder 1s infinite;
-  box-shadow: 0 0 20px 10px gold, 0 0 40px 20px yellow;
-  border: 3px solid gold;
-  z-index: 10;
-}
-@keyframes brilho {
-  0% { box-shadow: 0 0 10px 5px gold; border-color: gold; }
-  100% { box-shadow: 0 0 25px 12px red; border-color: red; }
-}
-@keyframes pulseBorder {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-3px); }
-      75% { transform: translateX(3px); }
-    }
-
-    #betList {
-      margin-top: 8px;
-      background: #222;
-      color: #fff;
-      padding: 6px;
-      border-radius: 6px;
-    }
-    #teamButtons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 4px;
-      margin-top: 8px;
-    }
-    .teamButton {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      border: 1px solid #fff;
-      background: #333;
-      padding: 0;
-      cursor: pointer;
-      overflow: hidden;
-      transition: transform 0.2s;
-    }
-    .teamButton img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .teamButton:hover {
-      transform: scale(1.1);
-    }
-    .teamButton:active {
-      animation: shake 0.2s;
-    }
-    .bet-item {
-      display: inline-block;
-      width: 40px;
-      margin: 2px;
-      background: #000;
-      border: 1px solid #fff;
-      border-radius: 4px;
-      padding: 2px;
-      cursor: pointer;
-    }
-    .bet-item:hover {
-      border-color: red;
-    }
-    #betAmount {
-      display: none;
-    }
-   #pixButton {
-  margin-top: 8px;
-  width: 100%;
-  height: 35px;
-  background: #007BFF; /* azul padrão */
-  border: 1px solid #fff;
-  color: white;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 6px;
-  transition: transform 0.2s, background 0.3s;
-}
-
-#pixButton:hover {
-  transform: scale(1.05);
-  background: #005FCC; /* azul mais escuro no hover */
-}
-
-
-
-
- #recargaPix {
-    margin-top: 12px;
-    width: 100%;
-    height: 40px;
-    background-color: #00aa00;
-    border: none;
-    color: white;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
-  }
-
-  #recargaPix:hover {
-    background-color: #008800;
-  }
-
-  #recargaPix:active {
-    background-color: #006600;
-  }
-
-
-#alertBox {
-  position: fixed;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #111;
-  color: white;
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 12px;
-  border: 2px solid;
-  box-shadow: 0 0 16px rgba(255, 255, 255, 0.2);
-  z-index: 999;
-  animation: fadeAlert 2s ease-in-out;
-}
-
-.hidden {
-  display: none;
-}
-
-@keyframes fadeAlert {
-  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-  10% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  90% { opacity: 1; }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-}
-
-
-
-
-
-
-
-
-
-
-
-   #btnTutorial {
-  margin: 10px auto;
-  display: block;
-  font-size: 12px;
-  padding: 4px 10px;
-  background-color: #179800;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  box-shadow: 0 0 4px rgba(0,0,0,0.3);
-  transition: background 0.3s ease;
-}
-#btnTutorial:hover {
-  background-color: #127600;
-}
-   
-
+      gap:8px; margin-top:8px; }
+    .slot { background:white; border:2px solid #333; display:flex; justify-content:center; align-items:center; width:49px; height:49px; }
+    .center-image { grid-area:btn; display:flex; justify-content:center; align-items:center; background:black; }
+    .center-image img { width:100%; height:100%; object-fit:contain; }
+    #btnPlay { margin-top:10px; width:100%; height:40px; background:red; border:none; color:white; font-size:16px; font-weight:bold; cursor:pointer; border-radius:8px; }
+    #btnPlay:active { animation:pulse .2s; }
+    #menu { background:#111; color:white; padding:8px; }
+    .flag-img { width:100%; height:100%; object-fit:contain; }
+    .blink { animation:brilho .2s infinite alternate, pulseBorder 1s infinite; box-shadow:0 0 20px 10px gold,0 0 40px 20px yellow; border:3px solid gold; z-index:10; }
+    @keyframes brilho { 0%{box-shadow:0 0 10px 5px gold;border-color:gold;} 100%{box-shadow:0 0 25px 12px red;border-color:red;} }
+    @keyframes pulseBorder { 0%,100%{transform:scale(1);} 50%{transform:scale(1.1);} }
+    @keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-3px);} 75%{transform:translateX(3px);} }
+    #betList { margin-top:8px; background:#222; color:#fff; padding:6px; border-radius:6px; }
+    #teamButtons { display:flex; flex-wrap:wrap; justify-content:center; gap:4px; margin-top:8px; }
+    .teamButton { width:45px; height:45px; border-radius:50%; border:1px solid #fff; background:#333; padding:0; cursor:pointer; overflow:hidden; transition:transform .2s; }
+    .teamButton img { width:100%; height:100%; object-fit:cover; }
+    .teamButton:hover { transform:scale(1.1); }
+    .teamButton:active { animation:shake .2s; }
+    .bet-item { display:inline-block; width:40px; margin:2px; background:#000; border:1px solid #fff; border-radius:4px; padding:2px; cursor:pointer; }
+    .bet-item:hover { border-color:red; }
+    #betAmount { display:none; }
+    #pixButton { margin-top:8px; width:100%; height:35px; background:#007BFF; border:1px solid #fff; color:white; font-size:14px; font-weight:bold; cursor:pointer; border-radius:6px; transition:transform .2s,background .3s; }
+    #pixButton:hover { transform:scale(1.05); background:#005FCC; }
+    #recargaPix { margin-top:12px; width:100%; height:40px; background-color:#00aa00; border:none; color:white; font-size:15px; font-weight:600; cursor:pointer; border-radius:8px; transition:background-color .3s ease; }
+    #recargaPix:hover { background-color:#008800; }
+    #recargaPix:active { background-color:#006600; }
+    #alertBox { position:fixed; top:30%; left:50%; transform:translate(-50%,-50%); background-color:#111; color:white; padding:12px 24px; font-size:16px; font-weight:bold; border-radius:12px; border:2px solid; box-shadow:0 0 16px rgba(255,255,255,.2); z-index:999; animation:fadeAlert 2s ease-in-out; }
+    .hidden { display:none; }
+    @keyframes fadeAlert { 0%{opacity:0;transform:translate(-50%,-50%) scale(.8);} 10%{opacity:1;transform:translate(-50%,-50%) scale(1);} 90%{opacity:1;} 100%{opacity:0;transform:translate(-50%,-50%) scale(.8);} }
+    #btnTutorial { margin:10px auto; display:block; font-size:12px; padding:4px 10px; background-color:#179800; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:bold; box-shadow:0 0 4px rgba(0,0,0,.3); transition:background .3s ease; }
+    #btnTutorial:hover { background-color:#127600; }
   </style>
-
 </head>
 <body>
-
-
-
-
-
-
-
-
-
-
 
 <div id="app">
   <div class="top-bar">
     <div>PRÊMIO: <span id="prize">0</span></div>
     <div>CRÉDITOS: <span id="credits">100</span></div>
-
-
-
-
-
-
-
-
-
   </div>
+
   <div id="board">
     <div class="slot" style="grid-area:tl"><img src="imagens/br.png" class="flag-img" data-team="br"></div>
     <div class="slot" style="grid-area:t1"><img src="imagens/de.png" class="flag-img" data-team="de"></div>
     <div class="slot" style="grid-area:t2"><img src="imagens/fr.png" class="flag-img" data-team="fr"></div>
     <div class="slot" style="grid-area:t3"><img src="imagens/es.png" class="flag-img" data-team="es"></div>
     <div class="slot" style="grid-area:t4"><img src="imagens/it.png" class="flag-img" data-team="it"></div>
-<div class="slot" style="grid-area:t5"><img src="imagens/t5.png" class="flag-img" data-team="t5"></div>
-<div class="slot" style="grid-area:t6"><img src="imagens/t6.png" class="flag-img" data-team="t6"></div>
-
+    <div class="slot" style="grid-area:t5"><img src="imagens/t5.png" class="flag-img" data-team="t5"></div>
+    <div class="slot" style="grid-area:t6"><img src="imagens/t6.png" class="flag-img" data-team="t6"></div>
     <div class="slot" style="grid-area:tr"><img src="imagens/pt.png" class="flag-img" data-team="pt"></div>
+
     <div class="slot" style="grid-area:l1"><img src="imagens/nl.png" class="flag-img" data-team="nl"></div>
     <div class="slot" style="grid-area:l2"><img src="imagens/gb.png" class="flag-img" data-team="gb"></div>
     <div class="slot" style="grid-area:l3"><img src="imagens/ar.png" class="flag-img" data-team="ar"></div>
-<div class="slot" style="grid-area:l4"><img src="imagens/l4.png" class="flag-img" data-team="l4"></div>
-<div class="slot" style="grid-area:l5"><img src="imagens/l5.png" class="flag-img" data-team="l5"></div>
+    <div class="slot" style="grid-area:l4"><img src="imagens/l4.png" class="flag-img" data-team="l4"></div>
+    <div class="slot" style="grid-area:l5"><img src="imagens/l5.png" class="flag-img" data-team="l5"></div>
 
     <div class="slot" style="grid-area:r1"><img src="imagens/mx.png" class="flag-img" data-team="mx"></div>
     <div class="slot" style="grid-area:r2"><img src="imagens/us.png" class="flag-img" data-team="us"></div>
     <div class="slot" style="grid-area:r3"><img src="imagens/co.png" class="flag-img" data-team="co"></div>
-<div class="slot" style="grid-area:r4"><img src="imagens/r4.png" class="flag-img" data-team="r4"></div>
-<div class="slot" style="grid-area:r5"><img src="imagens/r5.png" class="flag-img" data-team="r5"></div>
+    <div class="slot" style="grid-area:r4"><img src="imagens/r4.png" class="flag-img" data-team="r4"></div>
+    <div class="slot" style="grid-area:r5"><img src="imagens/r5.png" class="flag-img" data-team="r5"></div>
 
     <div class="slot" style="grid-area:bl"><img src="imagens/jp.png" class="flag-img" data-team="jp"></div>
-
-
-
-
-<div class="slot" style="grid-area:b6"><img src="imagens/b6.png" class="flag-img" data-team="b6"></div>
-<div class="slot" style="grid-area:b5"><img src="imagens/b5.png" class="flag-img" data-team="b5"></div>
+    <div class="slot" style="grid-area:b6"><img src="imagens/b6.png" class="flag-img" data-team="b6"></div>
+    <div class="slot" style="grid-area:b5"><img src="imagens/b5.png" class="flag-img" data-team="b5"></div>
     <div class="slot" style="grid-area:b4"><img src="imagens/kr.png" class="flag-img" data-team="kr"></div>
     <div class="slot" style="grid-area:b3"><img src="imagens/ch.png" class="flag-img" data-team="ch"></div>
     <div class="slot" style="grid-area:b2"><img src="imagens/uy.png" class="flag-img" data-team="uy"></div>
     <div class="slot" style="grid-area:b1"><img src="imagens/pe.png" class="flag-img" data-team="pe"></div>
     <div class="slot" style="grid-area:br"><img src="imagens/ca.png" class="flag-img" data-team="ca"></div>
+
     <div class="center-image">
       <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi3wF6qqHM7gX9CCZ-ZID5NFP3uo_fkJkqUFdYfit90hxYh74RyWttbLSqL1O9nj14kyTVW55g2kmaaCn50wz6ioM9w0l4xQDD2vb4bWnx9pxzXTL46HqJxNAbMXy-etQskoRXcKtL-SIT369yln3iP-a3H-W3bisRv6uvVbJ_Ef_x1c5E3oT2QDGNDrSEZ/s1600/ChatGPT%20Image%201%20de%20jul.%20de%202025,%2000_56_33.png">
     </div>
   </div>
+
   <button id="btnPlay">JOGAR</button>
+
   <div id="menu">
- 
-<!-- Botão para abrir o modal e carregar script -->
-<button id="recargaPix">Recarga via Pix</button>
-
-<div id="alertBox" class="hidden"></div>
-
-
+    <button id="recargaPix" class="hidden">Recarga via Pix</button>
+    <div id="alertBox" class="hidden"></div>
     <hr>
     <label>Escolher Time:</label>
     <div id="teamButtons">
@@ -401,48 +132,46 @@
       <button class="teamButton" data-team="uy"><img src="imagens/uy.png" alt="Grêmio"></button>
       <button class="teamButton" data-team="pe"><img src="imagens/pe.png" alt="Goiás"></button>
       <button class="teamButton" data-team="ca"><img src="imagens/ca.png" alt="Coritiba"></button>
-<button class="teamButton" data-team="t5"><img src="imagens/t5.png" alt="Coritiba"></button>
-<button class="teamButton" data-team="t6"><img src="imagens/t6.png" alt="Coritiba"></button>
-<button class="teamButton" data-team="l4"><img src="imagens/l4.png" alt="Coritiba"></button>
-<button class="teamButton" data-team="l5"><img src="imagens/l5.png" alt="Coritiba"></button>
-<button class="teamButton" data-team="r4"><img src="imagens/r4.png" alt="Coritiba"></button>
-<button class="teamButton" data-team="r5"><img src="imagens/r5.png" alt="Coritiba"></button>
-<button class="teamButton" data-team="b5"><img src="imagens/b5.png" alt="Coritiba"></button>
-<button class="teamButton" data-team="b6"><img src="imagens/b6.png" alt="Coritiba"></button>
-
-
-
-
-
-
-
+      <button class="teamButton" data-team="t5"><img src="imagens/t5.png" alt="Coritiba"></button>
+      <button class="teamButton" data-team="t6"><img src="imagens/t6.png" alt="Coritiba"></button>
+      <button class="teamButton" data-team="l4"><img src="imagens/l4.png" alt="Coritiba"></button>
+      <button class="teamButton" data-team="l5"><img src="imagens/l5.png" alt="Coritiba"></button>
+      <button class="teamButton" data-team="r4"><img src="imagens/r4.png" alt="Coritiba"></button>
+      <button class="teamButton" data-team="r5"><img src="imagens/r5.png" alt="Coritiba"></button>
+      <button class="teamButton" data-team="b5"><img src="imagens/b5.png" alt="Coritiba"></button>
+      <button class="teamButton" data-team="b6"><img src="imagens/b6.png" alt="Coritiba"></button>
     </div>
+
     <input type="number" id="betAmount" placeholder="1-5" min="1" max="5">
     <div id="betList"></div>
-    <div style="display: flex; justify-content: space-between; gap: 10px;">
-  <button id="pixButton" style="flex: 1;">💸 Sacar via Pix</button>
 
-</div>
-
+    <div style="display:flex; justify-content:space-between; gap:10px;">
+      <button id="pixButton" style="flex:1;">Sacar via Pix</button>
+    </div>
   </div>
-  <!-- Elementos de áudio -->
-  <audio id="backgroundSound" src="sons/background.mp3" loop autoplay></audio>
+
+  <!-- Áudio -->
+  <audio id="backgroundSound" src="sons/background.mp3" loop></audio>
   <audio id="clickSound" src="sons/click.mp3"></audio>
   <audio id="spinSound" src="sons/spin.mp3"></audio>
   <audio id="winSound" src="sons/win.mp3"></audio>
   <audio id="loseSound" src="sons/lose.mp3"></audio>
 </div>
+
+<!-- Botão Tutorial -->
+<button id="btnTutorial" onclick="toggleTutorial()">Tutorial</button>
+
+<div id="apresentacao" style="display:none; width:95%; margin:12px auto; padding:8px; background:#fff; border-radius:8px; box-shadow:0 0 6px rgba(0,0,0,.15); font-family:sans-serif;">
+  <h2 style="color:#179800; font-size:14px; margin:0 0 6px;">Como Jogar – Zebrinha Caça-Níquel</h2>
+  <p style="font-size:12px; margin:4px 0;"><strong>1.</strong> Escolha até <strong>5 animais</strong> clicando nos escudos.</p>
+  <p style="font-size:12px; margin:4px 0;"><strong>2.</strong> Aposte de <strong>1 a 5 créditos</strong> por bicho.</p>
+  <p style="font-size:12px; margin:4px 0;"><strong>3.</strong> Clique em <strong style="color:red;">JOGAR</strong> para rodar.</p>
+  <p style="font-size:13px; margin:4px 0;">Cada animal apostado vale 25x o valor da aposta, se acertar a zebra ganha <strong>100x</strong>!</p>
+  <p style="font-size:10px; margin-top:6px;">Use <strong>Recarga via Pix</strong> se os créditos acabarem.</p>
+</div>
+
 <script>
-
-
-
-
-
-
-
-
-
-
+/* ---------- VARIÁVEIS DE ESTADO ---------- */
 let credits = parseInt(localStorage.getItem('credits')) || 0;
 let prize = parseInt(localStorage.getItem('prize')) || 0;
 let totalDeposited = parseInt(localStorage.getItem('totalDeposited')) || 0;
@@ -451,472 +180,223 @@ let gamesPlayed = parseInt(localStorage.getItem('gamesPlayed')) || 0;
 let hasWonOnce = localStorage.getItem('hasWonOnce') === 'true';
 let winRound = parseInt(localStorage.getItem('winRound')) || null;
 
+/* Define winRound entre 1 e 18 se ainda não existir e houver depósito */
 if (winRound === null && totalDeposited > 0) {
-  winRound = Math.floor(Math.random() * totalDeposited) + 1;
+  winRound = Math.floor(Math.random() * 18) + 1;   // 1 a 18
   localStorage.setItem('winRound', winRound);
 }
 
-
-
-
-  let bets = {};
-
-  const creditsEl = document.getElementById('credits');
-  const prizeEl = document.getElementById('prize');
-  const btnPlay = document.getElementById('btnPlay');
-  const slots = Array.from(document.querySelectorAll('.slot'));
-  const betList = document.getElementById('betList');
-  const teamButtons = document.querySelectorAll('.teamButton');
-  const pixButton = document.getElementById('pixButton');
-  const backgroundSound = document.getElementById('backgroundSound');
-  const clickSound = document.getElementById('clickSound');
-  const spinSound = document.getElementById('spinSound');
-  const winSound = document.getElementById('winSound');
-  const loseSound = document.getElementById('loseSound');
-
-  // Configura o volume da trilha de fundo
-  backgroundSound.volume = 0.4;
-
-  // Inicia a trilha de fundo na primeira interação para contornar restrições de autoplay
-  document.addEventListener('click', () => {
-    backgroundSound.play().catch(() => {});
-  }, { once: true });
-
-  function updateDisplay() {
-    creditsEl.textContent = credits;
-    prizeEl.textContent = prize;
-
-    betList.innerHTML = Object.entries(bets).map(([team, val]) => {
-      return `
-        <div class="bet-item" data-team="${team}" style="display: inline-block; width: 40px; margin: 2px; background: #000; border: 1px solid #fff; border-radius: 4px; padding: 2px;">
-          <img src="imagens/${team}.png" style="width: 100%; height: 24px; object-fit: contain;">
-          <div style="color: yellow; font-size: 10px;">${val}</div>
-        </div>
-      `;
-    }).join('');
-
-
-
-
-    // Adiciona evento de clique aos itens de aposta
-    document.querySelectorAll('.bet-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const team = item.dataset.team;
-        removeBet(team);
-      });
-    });
-  }
-
-  function save() {
-    localStorage.setItem('credits', credits);
-    localStorage.setItem('prize', prize);
-    localStorage.setItem('totalDeposited', totalDeposited);
-    localStorage.setItem('totalWon', totalWon);
-    localStorage.setItem('gamesPlayed', gamesPlayed);
-    localStorage.setItem('hasWonOnce', hasWonOnce);
-    localStorage.setItem('winRound', winRound);
-  }
-
-  function addCredits(val) {
-    if (!isNaN(val) && val > 0) {
-      credits += val;
-      totalDeposited += val;
-      if (winRound === null) {
-        winRound = Math.floor(Math.random() * val) + 1;
-        localStorage.setItem('winRound', winRound);
-      }
-      save();
-      updateDisplay();
-    }
-  }
-
-  function placeBet(team = null, val = null) {
-    const selectedTeam = team || document.getElementById('betTeam')?.value;
-    const betValue = val || parseInt(document.getElementById('betAmount').value);
-    if (!selectedTeam || isNaN(betValue) || betValue < 1 || betValue > 5) return alert('Escolha time e valor de 1 a 5');
-    if (!bets[selectedTeam] && Object.keys(bets).length >= 5) return alert('Máximo 5 times por rodada');
-    const totalBet = (bets[selectedTeam] || 0) + betValue;
-    if (totalBet > 5) return alert('Máximo 5 créditos por time');
-    if (credits < betValue) return alert('Créditos insuficientes');
-
-    bets[selectedTeam] = totalBet;
-    credits -= betValue;
-    clickSound.play().catch(() => {});
-    save();
-    updateDisplay();
-  }
-
-
-
-// Esconde o botão de recarga se ainda houver créditos
+/* ---------- ELEMENTOS DOM ---------- */
+const creditsEl = document.getElementById('credits');
+const prizeEl   = document.getElementById('prize');
+const btnPlay   = document.getElementById('btnPlay');
+const slots     = Array.from(document.querySelectorAll('.slot'));
+const betList   = document.getElementById('betList');
+const teamButtons = document.querySelectorAll('.teamButton');
+const pixButton = document.getElementById('pixButton');
 const recargaBtn = document.getElementById('recargaPix');
-if (credits > 0) {
-  recargaBtn.classList.add('hidden');
+const backgroundSound = document.getElementById('backgroundSound');
+const clickSound = document.getElementById('clickSound');
+const spinSound  = document.getElementById('spinSound');
+const winSound   = document.getElementById('winSound');
+const loseSound  = document.getElementById('loseSound');
+
+/* Volume */
+backgroundSound.volume = 0.4;
+
+/* Inicia som de fundo na primeira interação */
+document.addEventListener('click', () => backgroundSound.play().catch(() => {}), {once:true});
+
+/* ---------- FUNÇÕES AUXILIARES ---------- */
+function save() {
+  localStorage.setItem('credits', credits);
+  localStorage.setItem('prize', prize);
+  localStorage.setItem('totalDeposited', totalDeposited);
+  localStorage.setItem('totalWon', totalWon);
+  localStorage.setItem('gamesPlayed', gamesPlayed);
+  localStorage.setItem('hasWonOnce', hasWonOnce);
+  localStorage.setItem('winRound', winRound);
 }
-
-
-
-
-
-
-
-
-
-  function removeBet(team) {
-    if (bets[team]) {
-      bets[team] -= 1;
-      credits += 1;
-      if (bets[team] === 0) {
-        delete bets[team];
-      }
-      clickSound.play().catch(() => {});
-      save();
-      updateDisplay();
+function addCredits(val) {
+  if (!isNaN(val) && val > 0) {
+    credits += val;
+    totalDeposited += val;
+    if (winRound === null) {
+      winRound = Math.floor(Math.random() * 18) + 1;
+      localStorage.setItem('winRound', winRound);
     }
-  }
-
-  teamButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const team = button.dataset.team;
-      const betValue = parseInt(document.getElementById('betAmount').value) || 1;
-      placeBet(team, betValue);
-    });
-  });
-
-  pixButton.addEventListener('click', () => {
-    if (totalWon < 100) {
-      alert('Você precisa atingir 100 créditos ganhos (não depositados) para sacar.');
-    } else {
-      alert('Saque liberado!'); // Aqui você pode integrar o processo real de saque via Pix.
-    }
-  });
-
-  btnPlay.onclick = () => {
-    if (Object.keys(bets).length === 0) return alert('Nenhuma aposta feita');
-    btnPlay.disabled = true;
-spinSound.play().catch(() => {});
-slots.forEach(s => s.classList.remove('blink'));
-
-let count = 0;
-const flashes = 40 + Math.floor(Math.random() * 15);
-
-// Lista de times apostados
-const betTeams = Object.keys(bets);
-
-// Filtra apenas os slots que NÃO estão nas apostas
-const safeSlots = slots.filter(slot => {
-  const team = slot.querySelector('img')?.dataset.team;
-  return !betTeams.includes(team);
-});
-
-// Se não houver slots seguros, sorteia aleatoriamente de qualquer forma
-const slotPool = safeSlots.length > 0 ? safeSlots : slots;
-
-let finalSlot = null;
-
-const interval = setInterval(() => {
-  slots.forEach(s => s.classList.remove('blink'));
-  const idx = Math.floor(Math.random() * slotPool.length);
-  const slot = slotPool[idx];
-  slot.classList.add('blink');
-  finalSlot = slot;
-  if (++count > flashes) {
-    clearInterval(interval);
-
-    gamesPlayed++;
-    let winner = finalSlot.querySelector('img').dataset.team;
-    let win = 0;
-
-    // Lógica modificada para vitória controlada
-    if (!hasWonOnce && gamesPlayed === winRound && totalDeposited > 0) {
-      // Encontrar bichos com exatamente 1 crédito apostado
-      const eligibleBets = Object.entries(bets).filter(([team, val]) => val === 1);
-      if (eligibleBets.length > 0) {
-        // Encontrar o com a menor "colocação" (assumindo menor valor de aposta, mas todos são 1, então aleatório entre eles)
-        // Para "menor colocação", assumindo ordenar por valor (menor primeiro), mas como é 1, pegue o primeiro ou aleatório
-        eligibleBets.sort((a, b) => a[1] - b[1]); // Menor aposta primeiro
-        winner = eligibleBets[0][0]; // O com menor aposta (1)
-        win = 25; // Ganho fixo de 25 créditos
-        totalWon += win;
-        hasWonOnce = true;
-        localStorage.setItem('winRound', null); // Reset para evitar repetição
-      }
-    }
-
-    prize += win;
-    credits += win;
-    bets = {};
-    save();
-    updateDisplay();
-
-    if (win) {
-      winSound.play().catch(() => {});
-      showAlert(`🏆 GANHOU ${win} CRÉDITOS!`, '#FFD700');
-    } else {
-      loseSound.play().catch(() => {});
-      showAlert('😢 NÃO FOI DESSA VEZ', '#ff4444');
-    }
-
-
-
-
-
-
- // Mostra botão de recarga APENAS se o jogador ficou com 0 créditos após jogar
-    const recargaBtn = document.getElementById('recargaPix');
-    if (credits <= 0) {
-      recargaBtn.classList.remove('hidden');
-
-      if (!localStorage.getItem('urlUpdated')) {
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set('no-credits', 'true');
-        localStorage.setItem('urlUpdated', 'true');
-        history.replaceState(null, '', currentUrl.toString());
-      }
-    } else {
-      recargaBtn.classList.add('hidden');
-      localStorage.removeItem('urlUpdated');
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    btnPlay.disabled = false;
-  }
-}, 100);
-  };
-
-  updateDisplay();
-
-
-
-
-
-
-
-
-
-
-function showAlert(message, borderColor) {
-  const alertBox = document.getElementById('alertBox');
-  alertBox.textContent = message;
-  alertBox.style.borderColor = borderColor;
-  alertBox.classList.remove('hidden');
-
-  setTimeout(() => {
-    alertBox.classList.add('hidden');
-  }, 2000);
-}
-
-
-
-
-
-
-
-  pixButton.addEventListener('click', () => {
-    if (totalWon < 100) {
-      alert('Você precisa atingir 100 créditos ganhos (não depositados) para sacar.');
-    } else {
-      alert('Saque liberado!'); // Aqui você pode integrar o processo real de saque via Pix.
-    }
-  });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Função para atualizar a URL apenas uma vez
-function refreshPageWithUrlUpdate() {
-  if (!localStorage.getItem('urlUpdated')) {
-    const currentUrl = new URL(window.location.href);
-    currentUrl.searchParams.set('no-credits', 'true');
-    localStorage.setItem('urlUpdated', 'true'); // marca como atualizada
-    window.location.href = currentUrl.toString();
+    save(); updateDisplay();
   }
 }
-
-// Atualiza display e controla botão de recarga
 function updateDisplay() {
   creditsEl.textContent = credits;
-  prizeEl.textContent = prize;
-
-  betList.innerHTML = Object.entries(bets).map(([team, val]) => {
-    return `
-      <div class="bet-item" data-team="${team}" style="display: inline-block; width: 40px; margin: 2px; background: #000; border: 1px solid #fff; border-radius: 4px; padding: 2px;">
-        <img src="imagens/${team}.png" style="width: 100%; height: 24px; object-fit: contain;">
-        <div style="color: yellow; font-size: 10px;">${val}</div>
-      </div>
-    `;
-  }).join('');
-
+  prizeEl.textContent   = prize;
+  betList.innerHTML = Object.entries(bets).map(([team, val]) => `
+    <div class="bet-item" data-team="${team}">
+      <img src="imagens/${team}.png" style="width:100%;height:24px;object-fit:contain;">
+      <div style="color:yellow;font-size:10px;">${val}</div>
+    </div>`).join('');
   document.querySelectorAll('.bet-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const team = item.dataset.team;
-      removeBet(team);
-    });
+    item.onclick = () => removeBet(item.dataset.team);
   });
-
-  
-
+  /* Mostra/esconde botão de recarga */
+  if (credits > 0) recargaBtn.classList.add('hidden');
+  else recargaBtn.classList.remove('hidden');
+}
+function placeBet(team, val) {
+  if (!team || isNaN(val) || val < 1 || val > 5) return alert('Escolha time e valor 1-5');
+  if (!bets[team] && Object.keys(bets).length >= 5) return alert('Máximo 5 times');
+  const total = (bets[team]||0) + val;
+  if (total > 5) return alert('Máximo 5 créditos por time');
+  if (credits < val) return alert('Créditos insuficientes');
+  bets[team] = total;
+  credits -= val;
+  clickSound.play().catch(()=>{});
+  save(); updateDisplay();
+}
+function removeBet(team) {
+  if (bets[team]) {
+    bets[team] -= 1;
+    credits += 1;
+    if (bets[team] === 0) delete bets[team];
+    clickSound.play().catch(()=>{});
+    save(); updateDisplay();
+  }
+}
+function showAlert(msg, color) {
+  const box = document.getElementById('alertBox');
+  box.textContent = msg;
+  box.style.borderColor = color;
+  box.classList.remove('hidden');
+  setTimeout(() => box.classList.add('hidden'), 2000);
 }
 
+/* ---------- BETS ---------- */
+let bets = {};
+teamButtons.forEach(btn => {
+  btn.onclick = () => {
+    const team = btn.dataset.team;
+    const val  = parseInt(document.getElementById('betAmount').value) || 1;
+    placeBet(team, val);
+  };
+});
 
+/* ---------- SAQUE ---------- */
+pixButton.onclick = () => {
+  if (totalWon < 100) alert('Você precisa atingir 100 créditos ganhos (não depositados) para sacar.');
+  else alert('Saque liberado!');
+};
 
+/* ---------- JOGAR ---------- */
+btnPlay.onclick = () => {
+  if (Object.keys(bets).length === 0) return alert('Nenhuma aposta feita');
+  btnPlay.disabled = true;
+  spinSound.play().catch(()=>{});
+  slots.forEach(s => s.classList.remove('blink'));
 
+  let count = 0;
+  const flashes = 40 + Math.floor(Math.random() * 15);
+  const betTeams = Object.keys(bets);
+  const safeSlots = slots.filter(s => !betTeams.includes(s.querySelector('img')?.dataset.team));
+  const slotPool = safeSlots.length > 0 ? safeSlots : slots;
+  let finalSlot = null;
 
+  const interval = setInterval(() => {
+    slots.forEach(s => s.classList.remove('blink'));
+    const idx = Math.floor(Math.random() * slotPool.length);
+    const slot = slotPool[idx];
+    slot.classList.add('blink');
+    finalSlot = slot;
+    if (++count > flashes) {
+      clearInterval(interval);
+      gamesPlayed++;
 
-// Função para atualizar URL (recarregar página)
-  function reloadPage() {
-    // Se quiser atualizar URL adicionando parâmetro, pode fazer aqui, por exemplo:
-    // const url = new URL(window.location.href);
-    // url.searchParams.set('modalClosed', 'true');
-    // window.location.href = url.toString();
+      /* ---------- LÓGICA DE VITÓRIA GARANTIDA ---------- */
+      let winner = finalSlot.querySelector('img').dataset.team;
+      let win = 0;
 
-    // Ou simplesmente recarregar a página:
-    location.reload();
-  }
-
-  // Aguarda DOM estar pronto
-  document.addEventListener('DOMContentLoaded', () => {
-    // Se o modal tem id #paymentModal (ou mude para o id correto do seu modal)
-    const modalId = 'paymentModal';
-
-    const body = document.body;
-
-    // Configura MutationObserver para observar remoção/adição do modal no DOM
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach(mutation => {
-        mutation.removedNodes.forEach(removed => {
-          if (removed.id === modalId) {
-            // Modal foi removido -> recarrega a página
-            reloadPage();
+      if (!hasWonOnce && totalDeposited > 0 && gamesPlayed <= 18 && gamesPlayed === winRound) {
+        const eligible = Object.entries(bets).filter(([t, v]) => v === 1);
+        if (eligible.length > 0) {
+          const rnd = Math.floor(Math.random() * eligible.length);
+          const [winTeam] = eligible[rnd];
+          const winSlot = slots.find(s => s.querySelector('img')?.dataset.team === winTeam);
+          if (winSlot) {
+            slots.forEach(s => s.classList.remove('blink'));
+            winSlot.classList.add('blink');
+            finalSlot = winSlot;
+            winner = winTeam;
           }
-        });
-
-        mutation.addedNodes.forEach(added => {
-          if (added.id === modalId) {
-            // Modal adicionado, podemos monitorar se ele fica oculto
-            observeModalVisibility(added);
-          }
-        });
-      });
-    });
-
-    observer.observe(body, { childList: true });
-
-    // Se o modal já estiver na página no início
-    const existingModal = document.getElementById(modalId);
-    if (existingModal) {
-      observeModalVisibility(existingModal);
-    }
-
-    // Função que observa quando modal fica oculto (display:none)
-    function observeModalVisibility(modalElement) {
-      const visibilityObserver = new MutationObserver(() => {
-        const style = window.getComputedStyle(modalElement);
-        if (style.display === 'none' || style.visibility === 'hidden' || modalElement.hidden) {
-          // Modal oculto -> recarrega a página
-          reloadPage();
-          visibilityObserver.disconnect();
+          win = 25;
+          totalWon += win;
+          hasWonOnce = true;
+          localStorage.setItem('hasWonOnce', 'true');
+          localStorage.removeItem('winRound');
         }
-      });
-
-      visibilityObserver.observe(modalElement, { attributes: true, attributeFilter: ['style', 'hidden'] });
-    }
-  });
-
-
-
-
-
-
-
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-  document.getElementById("recargaPix").addEventListener("click", function () {
-    // Verifica se o script já foi carregado
-    if (!document.getElementById("pix-script-loader")) {
-      const script = document.createElement("script");
-      script.src = "MPayment/Script.js";
-      script.id = "pix-script-loader";
-      script.onload = function () {
-        if (typeof openPaymentModal === "function") {
-          openPaymentModal(); // Chama a função após o script carregar
-        }
-      };
-      document.body.appendChild(script);
-    } else {
-      // Se já carregado, apenas chama a função diretamente
-      if (typeof openPaymentModal === "function") {
-        openPaymentModal();
       }
+
+      prize += win;
+      credits += win;
+      bets = {};
+      save();
+      updateDisplay();
+
+      if (win) { winSound.play().catch(()=>{}); showAlert(`GANHOU ${win} CRÉDITOS!`, '#FFD700'); }
+      else     { loseSound.play().catch(()=>{}); showAlert('NÃO FOI DESSA VEZ', '#ff4444'); }
+
+      btnPlay.disabled = false;
     }
+  }, 100);
+};
+
+/* ---------- INICIALIZAÇÃO ---------- */
+updateDisplay();
+
+/* ---------- RECARGA PIX (modal) ---------- */
+document.getElementById('recargaPix').onclick = function () {
+  if (!document.getElementById('pix-script-loader')) {
+    const s = document.createElement('script');
+    s.src = 'MPayment/Script.js';
+    s.id  = 'pix-script-loader';
+    s.onload = () => typeof openPaymentModal === 'function' && openPaymentModal();
+    document.body.appendChild(s);
+  } else {
+    typeof openPaymentModal === 'function' && openPaymentModal();
+  }
+};
+
+/* ---------- TUTORIAL ---------- */
+function toggleTutorial() {
+  const el = document.getElementById('apresentacao');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+/* ---------- MODAL RELOAD (se precisar) ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+  const modalId = 'paymentModal';
+  const observer = new MutationObserver(muts => {
+    muts.forEach(m => {
+      m.removedNodes.forEach(n => { if (n.id === modalId) location.reload(); });
+      m.addedNodes.forEach(n => { if (n.id === modalId) observeVisibility(n); });
+    });
   });
+  observer.observe(document.body, {childList:true});
+  const existing = document.getElementById(modalId);
+  if (existing) observeVisibility(existing);
+  function observeVisibility(el) {
+    const visObs = new MutationObserver(() => {
+      const st = getComputedStyle(el);
+      if (st.display === 'none' || st.visibility === 'hidden' || el.hidden) {
+        location.reload();
+        visObs.disconnect();
+      }
+    });
+    visObs.observe(el, {attributes:true, attributeFilter:['style','hidden']});
+  }
+});
 </script>
-
-
 
 <script src="MPayment/Modal.js"></script>
-
-
-<!-- Botão Tutorial -->
-<button id="btnTutorial" onclick="toggleTutorial()">❔ Tutorial</button>
-
-<!-- Banner de Apresentação -->
-<div id="apresentacao" style="display: none; width: 95%; margin: 12px auto; padding: 8px; background: #fff; border-radius: 8px; box-shadow: 0 0 6px rgba(0,0,0,0.15); font-family: sans-serif;">
-  <h2 style="color: #179800; font-size: 14px; margin: 0 0 6px;">🎮 Como Jogar – Zebrinha Caça-Níquel</h2>
-  <p style="font-size: 12px; margin: 4px 0;"><strong>1.</strong> Escolha até <strong>5 animais</strong> clicando nos escudos.</p>
-  <p style="font-size: 12px; margin: 4px 0;"><strong>2.</strong> Aposte de <strong>1 a 5 créditos</strong> por bicho.</p>
-  <p style="font-size: 12px; margin: 4px 0;"><strong>3.</strong> Clique em <strong style="color:red;">JOGAR</strong> para rodar.</p>
-  <p style="font-size: 13px; margin: 4px 0;">Cada animal apostado vale 25x o valor da aposta, se acertar a zebra ganha <strong>100x</strong>!</p>
-  <p style="font-size: 10px; margin-top: 6px;">Use <strong>Recarga via Pix</strong> se os créditos acabarem.</p>
-</div>
-
-<script>
-  function toggleTutorial() {
-    const banner = document.getElementById('apresentacao');
-    banner.style.display = (banner.style.display === 'none') ? 'block' : 'none';
-  }
-</script>
-  
-
-
 
 </body>
 </html>
