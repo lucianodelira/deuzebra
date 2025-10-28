@@ -47,7 +47,7 @@
 <div id="app">
   <div class="top-bar">
     <div>PRÊMIO: <span id="prize">0</span></div>
-    <div>CRÉDITOS: <span id="credits">100</span></div>
+    <div>CRÉDITOS: <span id="credits">0</span></div>
   </div>
   <div id="board">
     <div class="slot" style="grid-area:tl"><img src="imagens/br.png" class="flag-img" data-team="br"></div>
@@ -82,7 +82,7 @@
   </div>
   <button id="btnPlay">JOGAR</button>
   <div id="menu">
-    <button id="recargaPix" class="hidden">Recarga via Pix</button>
+    <button id="recargaPix">Recarga via Pix</button>
     <div id="alertBox" class="hidden"></div>
     <hr>
     <label>Escolher Time:</label>
@@ -129,18 +129,18 @@
   <p><strong>1.</strong> Escolha até <strong>5 animais</strong>.</p>
   <p><strong>2.</strong> Aposte <strong>1 crédito</strong> em cada.</p>
   <p><strong>3.</strong> Jogue até 18 vezes → <strong>você ganha uma vez!</strong></p>
+  <p style="font-size:11px;color:#d00;"><strong>Atenção:</strong> Só ganha com <strong>1 crédito em 1 time</strong>. Mais de 1 crédito = não ganha.</p>
 </div>
 
 <script>
-let credits = parseInt(localStorage.getItem('credits')) || 0;
-let prize = parseInt(localStorage.getItem('prize')) || 0;
+// === VARIÁVEIS GLOBAIS ===
+let credits = 0; // Sempre começa com 0
+let prize = 0;
 let totalDeposited = parseInt(localStorage.getItem('totalDeposited')) || 0;
 let totalWon = parseInt(localStorage.getItem('totalWon')) || 0;
-let gamesPlayed = parseInt(localStorage.getItem('gamesPlayed')) || 0;
-let hasWonOnce = localStorage.getItem('hasWonOnce') === 'true';
-let winRound = parseInt(localStorage.getItem('winRound')) || null;
 let bets = {};
 
+// === ELEMENTOS DOM ===
 const creditsEl = document.getElementById('credits');
 const prizeEl = document.getElementById('prize');
 const btnPlay = document.getElementById('btnPlay');
@@ -158,28 +158,18 @@ const loseSound = document.getElementById('loseSound');
 backgroundSound.volume = 0.4;
 document.addEventListener('click', () => backgroundSound.play().catch(() => {}), { once: true });
 
+// === SALVAR ===
 function save() {
-  localStorage.setItem('credits', credits);
-  localStorage.setItem('prize', Math.max(0, prize));
   localStorage.setItem('totalDeposited', totalDeposited);
   localStorage.setItem('totalWon', totalWon);
-  localStorage.setItem('gamesPlayed', gamesPlayed);
-  localStorage.setItem('hasWonOnce', hasWonOnce);
-  localStorage.setItem('winRound', winRound);
+  // Não salva créditos nem prêmio (sempre resetam)
 }
 
-function addCredits(val) {
-  if (!isNaN(val) && val > 0) {
-    credits += val;
-    totalDeposited += val;
-    save();
-    updateDisplay();
-  }
-}
-
+// === ATUALIZAR TELA ===
 function updateDisplay() {
   creditsEl.textContent = credits;
-  prizeEl.textContent = Math.max(0, prize);
+  prizeEl.textContent = prize;
+
   betList.innerHTML = Object.entries(bets).map(([t, v]) => `
     <div class="bet-item" data-team="${t}">
       <img src="imagens/${t}.png" style="width:100%;height:24px;object-fit:contain;">
@@ -189,16 +179,18 @@ function updateDisplay() {
   recargaBtn.classList.toggle('hidden', credits > 0);
 }
 
-function placeBet(team, val) {
+// === APOSTA ===
+function placeBet(team, val = 1) {
   if (!team || val < 1 || val > 5) return;
-  if (!bets[team] && Object.keys(bets).length >= 5) return alert('Escolha seu bicho e entre na jogada! 🦓');
+  if (!bets[team] && Object.keys(bets).length >= 5) return showAlert('Máximo 5 times!', '#ff4444');
   const total = (bets[team] || 0) + val;
-  if (total > 5) return alert('Escolha seu bicho e entre na jogada! 🦓');
-  if (credits < val) return alert('Ops, sem créditos! 😅 Que tal uma recarga via Pix para continuar a diversão?');
+  if (total > 5) return showAlert('Máximo 5 créditos por time!', '#ff4444');
+  if (credits < val) return showAlert('Sem créditos! Recarregue.', '#ff4444');
+
   bets[team] = total;
   credits -= val;
+  prize -= val; // PRÊMIO DIMINUI JUNTO
   clickSound.play().catch(() => {});
-  save();
   updateDisplay();
 }
 
@@ -206,21 +198,17 @@ function removeBet(team) {
   if (bets[team]) {
     bets[team]--;
     credits++;
+    prize++; // PRÊMIO AUMENTA AO REMOVER
     if (bets[team] === 0) delete bets[team];
     clickSound.play().catch(() => {});
-    save();
     updateDisplay();
   }
 }
 
 teamButtons.forEach(b => b.onclick = () => placeBet(b.dataset.team, 1));
 
-pixButton.onclick = () => {
-  if (totalWon < 100) alert('Quase lá! Junte 100 créditos ganhos e libere seu saque! 💰');
-  else alert('Saque liberado!');
-};
-
-function showAlert(m, c) {
+// === ALERTA ===
+function showAlert(m, c = '#FFD700') {
   const a = document.getElementById('alertBox');
   a.textContent = m;
   a.style.borderColor = c;
@@ -228,14 +216,43 @@ function showAlert(m, c) {
   setTimeout(() => a.classList.add('hidden'), 2000);
 }
 
+// === INICIAR CICLO DE 18 JOGADAS ===
+function initGameCycle() {
+  if (!localStorage.getItem('gameCycleStarted')) {
+    localStorage.setItem('gameCycleStarted', 'true');
+    localStorage.setItem('currentGameRound', '1');
+    localStorage.setItem('winRound', Math.floor(Math.random() * 18) + 1);
+    localStorage.setItem('hasWonInCycle', 'false');
+  }
+}
+
+// === BOTÃO JOGAR ===
 btnPlay.onclick = () => {
-  if (!Object.keys(bets).length) return alert('Escolha seu bicho e entre na jogada! 🦓');
-  const hasOneCredit = Object.values(bets).some(v => v === 1);
+  if (!Object.keys(bets).length) return showAlert('Escolha seu time!', '#ff4444');
+
+  initGameCycle();
+
+  let currentRound = parseInt(localStorage.getItem('currentGameRound') || '1');
+  const winRound = parseInt(localStorage.getItem('winRound'));
+  const hasWonInCycle = localStorage.getItem('hasWonInCycle') === 'true';
+
+  if (currentRound > 18) {
+    localStorage.setItem('currentGameRound', '1');
+    localStorage.setItem('winRound', Math.floor(Math.random() * 18) + 1);
+    localStorage.setItem('hasWonInCycle', 'false');
+    currentRound = 1;
+  }
+
+  const itensCom1Credito = Object.entries(bets).filter(([t, v]) => v === 1);
+  const temMaisDe1Credito = Object.values(bets).some(v => v > 1);
+  const podeGanhar = !temMaisDe1Credito && itensCom1Credito.length >= 1;
+
   btnPlay.disabled = true;
   spinSound.play().catch(() => {});
   slots.forEach(s => s.classList.remove('blink'));
 
-  let count = 0, flashes = 40 + Math.floor(Math.random() * 15);
+  let count = 0;
+  const flashes = 35 + Math.floor(Math.random() * 20);
   const safeSlots = slots.filter(s => !Object.keys(bets).includes(s.querySelector('img')?.dataset.team));
   const pool = safeSlots.length ? safeSlots : slots;
   let finalSlot;
@@ -245,52 +262,54 @@ btnPlay.onclick = () => {
     const slot = pool[Math.floor(Math.random() * pool.length)];
     slot.classList.add('blink');
     finalSlot = slot;
+
     if (++count > flashes) {
       clearInterval(interval);
-      if (hasOneCredit && totalDeposited > 0) {
-        if (winRound === null && !hasWonOnce) {
-          winRound = Math.floor(Math.random() * 18) + 1; // Sorteia na primeira jogada válida
-          localStorage.setItem('winRound', winRound);
-        }
-        gamesPlayed++;
-        localStorage.setItem('gamesPlayed', gamesPlayed);
-      }
 
-      let win = 0, winner = finalSlot.querySelector('img').dataset.team;
+      let win = 0;
+      let winner = null;
 
-      if (!hasWonOnce && hasOneCredit && totalDeposited > 0 && gamesPlayed === winRound) {
-        const eligible = Object.entries(bets).filter(([t, v]) => v === 1);
-        if (eligible.length) {
-          const [winTeam] = eligible[Math.floor(Math.random() * eligible.length)];
-          const winSlot = slots.find(s => s.querySelector('img')?.dataset.team === winTeam);
-          if (winSlot) {
-            slots.forEach(s => s.classList.remove('blink'));
-            winSlot.classList.add('blink');
-            finalSlot = winSlot;
-            winner = winTeam;
-          }
+      if (podeGanhar && currentRound === winRound && !hasWonInCycle) {
+        const [winTeam] = itensCom1Credito[Math.floor(Math.random() * itensCom1Credito.length)];
+        const winSlot = slots.find(s => s.querySelector('img')?.dataset.team === winTeam);
+
+        if (winSlot) {
+          slots.forEach(s => s.classList.remove('blink'));
+          winSlot.classList.add('blink');
+          finalSlot = winSlot;
+          winner = winTeam;
           win = 25;
+          prize += win;
           totalWon += win;
-          prize += win; // Só aumenta prize ao ganhar
-          hasWonOnce = true;
-          localStorage.setItem('hasWonOnce', 'true');
-          localStorage.removeItem('winRound');
+          localStorage.setItem('hasWonInCycle', 'true');
+          showAlert('GANHOU 25 CRÉDITOS!', '#FFD700');
+          winSound.play().catch(() => {});
         }
+      } else {
+        finalSlot.classList.add('blink');
+        showAlert('NÃO FOI DESSA VEZ', '#ff4444');
+        loseSound.play().catch(() => {});
       }
+
+      currentRound++;
+      localStorage.setItem('currentGameRound', currentRound);
 
       credits += win;
       bets = {};
       save();
       updateDisplay();
-      win ? (winSound.play().catch(() => {}), showAlert(`GANHOU ${win} CRÉDITOS!`, '#FFD700'))
-          : (loseSound.play().catch(() => {}), showAlert('NÃO FOI DESSA VEZ', '#ff4444'));
       btnPlay.disabled = false;
     }
-  }, 100);
+  }, 90);
 };
 
-updateDisplay();
+// === SAQUE ===
+pixButton.onclick = () => {
+  if (totalWon < 100) showAlert('Junte 100 créditos ganhos para sacar!', '#ff4444');
+  else showAlert('Saque liberado!', '#00ff00');
+};
 
+// === RECARGA ===
 document.getElementById('recargaPix').onclick = function () {
   if (!document.getElementById('pix-script-loader')) {
     const s = document.createElement('script');
@@ -301,10 +320,15 @@ document.getElementById('recargaPix').onclick = function () {
   } else openPaymentModal && openPaymentModal();
 };
 
+// === TUTORIAL ===
 function toggleTutorial() {
   const el = document.getElementById('apresentacao');
   el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
+
+// === INICIALIZAÇÃO ===
+updateDisplay();
+initGameCycle();
 </script>
 <script src="MPayment/Modal.js"></script>
 </body>
