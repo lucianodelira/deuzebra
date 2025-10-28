@@ -44,17 +44,14 @@
   </style>
 </head>
 <body>
-
 <div id="app">
   <div class="top-bar">
     <div>PRÊMIO: <span id="prize">0</span></div>
     <div>CRÉDITOS: <span id="credits">100</span></div>
   </div>
-
   <div id="board">
-    <!-- (mesmos slots do original) -->
     <div class="slot" style="grid-area:tl"><img src="imagens/br.png" class="flag-img" data-team="br"></div>
-    <div class="slot" style="grid-area:t Cri1"><img src="imagens/de.png" class="flag-img" data-team="de"></div>
+    <div class="slot" style="grid-area:t1"><img src="imagens/de.png" class="flag-img" data-team="de"></div>
     <div class="slot" style="grid-area:t2"><img src="imagens/fr.png" class="flag-img" data-team="fr"></div>
     <div class="slot" style="grid-area:t3"><img src="imagens/es.png" class="flag-img" data-team="es"></div>
     <div class="slot" style="grid-area:t4"><img src="imagens/it.png" class="flag-img" data-team="it"></div>
@@ -83,16 +80,13 @@
       <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi3wF6qqHM7gX9CCZ-ZID5NFP3uo_fkJkqUFdYfit90hxYh74RyWttbLSqL1O9nj14kyTVW55g2kmaaCn50wz6ioM9w0l4xQDD2vb4bWnx9pxzXTL46HqJxNAbMXy-etQskoRXcKtL-SIT369yln3iP-a3H-W3bisRv6uvVbJ_Ef_x1c5E3oT2QDGNDrSEZ/s1600/ChatGPT%20Image%201%20de%20jul.%20de%202025,%2000_56_33.png">
     </div>
   </div>
-
   <button id="btnPlay">JOGAR</button>
-
   <div id="menu">
     <button id="recargaPix" class="hidden">Recarga via Pix</button>
     <div id="alertBox" class="hidden"></div>
     <hr>
     <label>Escolher Time:</label>
     <div id="teamButtons">
-      <!-- (mesmos botões do original) -->
       <button class="teamButton" data-team="br"><img src="imagens/br.png"></button>
       <button class="teamButton" data-team="de"><img src="imagens/de.png"></button>
       <button class="teamButton" data-team="fr"><img src="imagens/fr.png"></button>
@@ -123,20 +117,18 @@
     <div id="betList"></div>
     <button id="pixButton" style="flex:1;">Sacar via Pix</button>
   </div>
-
   <audio id="backgroundSound" src="sons/background.mp3" loop></audio>
   <audio id="clickSound" src="sons/click.mp3"></audio>
   <audio id="spinSound" src="sons/spin.mp3"></audio>
   <audio id="winSound" src="sons/win.mp3"></audio>
   <audio id="loseSound" src="sons/lose.mp3"></audio>
 </div>
-
 <button id="btnTutorial" onclick="toggleTutorial()">Tutorial</button>
 <div id="apresentacao" style="display:none; width:95%; margin:12px auto; padding:8px; background:#fff; border-radius:8px; box-shadow:0 0 6px rgba(0,0,0,.15);">
   <h2 style="color:#179800; font-size:14px;">Como Jogar</h2>
   <p><strong>1.</strong> Escolha até <strong>5 animais</strong>.</p>
   <p><strong>2.</strong> Aposte <strong>1 crédito</strong> em cada.</p>
-  <p><strong>3.</strong> Jogue 18 vezes → <strong>na 18ª, você ganha!</strong></p>
+  <p><strong>3.</strong> Jogue até 18 vezes → <strong>você ganha uma vez!</strong></p>
 </div>
 
 <script>
@@ -146,6 +138,7 @@ let totalDeposited = parseInt(localStorage.getItem('totalDeposited')) || 0;
 let totalWon = parseInt(localStorage.getItem('totalWon')) || 0;
 let gamesPlayed = parseInt(localStorage.getItem('gamesPlayed')) || 0;
 let hasWonOnce = localStorage.getItem('hasWonOnce') === 'true';
+let winRound = parseInt(localStorage.getItem('winRound')) || null;
 let bets = {};
 
 const creditsEl = document.getElementById('credits');
@@ -163,21 +156,35 @@ const winSound = document.getElementById('winSound');
 const loseSound = document.getElementById('loseSound');
 
 backgroundSound.volume = 0.4;
-document.addEventListener('click', () => backgroundSound.play().catch(() => {}), {once: true});
+document.addEventListener('click', () => backgroundSound.play().catch(() => {}), { once: true });
 
 function save() {
   localStorage.setItem('credits', credits);
-  localStorage.setItem('prize', prize);
+  localStorage.setItem('prize', Math.max(0, prize)); // Evita valores negativos
   localStorage.setItem('totalDeposited', totalDeposited);
   localStorage.setItem('totalWon', totalWon);
   localStorage.setItem('gamesPlayed', gamesPlayed);
   localStorage.setItem('hasWonOnce', hasWonOnce);
+  localStorage.setItem('winRound', winRound);
+}
+
+function addCredits(val) {
+  if (!isNaN(val) && val > 0) {
+    credits += val;
+    totalDeposited += val;
+    if (winRound === null && !hasWonOnce) {
+      winRound = Math.floor(Math.random() * 18) + 1; // Sorteia entre 1 e 18
+      localStorage.setItem('winRound', winRound);
+    }
+    save();
+    updateDisplay();
+  }
 }
 
 function updateDisplay() {
   creditsEl.textContent = credits;
-  prizeEl.textContent = prize;
-  betList.innerHTML = Object.entries(bets).map(([t,v]) => `
+  prizeEl.textContent = Math.max(0, prize); // Evita exibir negativo
+  betList.innerHTML = Object.entries(bets).map(([t, v]) => `
     <div class="bet-item" data-team="${t}">
       <img src="imagens/${t}.png" style="width:100%;height:24px;object-fit:contain;">
       <div style="color:yellow;font-size:10px;">${v}</div>
@@ -189,15 +196,27 @@ function updateDisplay() {
 function placeBet(team, val) {
   if (!team || val < 1 || val > 5) return;
   if (!bets[team] && Object.keys(bets).length >= 5) return alert('Máx 5 times');
-  const total = (bets[team]||0) + val;
+  const total = (bets[team] || 0) + val;
   if (total > 5) return alert('Máx 5 por time');
   if (credits < val) return alert('Sem créditos');
-  bets[team] = total; credits -= val; clickSound.play().catch(()=>{});
-  save(); updateDisplay();
+  bets[team] = total;
+  credits -= val;
+  prize -= val; // Subtrai do prêmio
+  clickSound.play().catch(() => {});
+  save();
+  updateDisplay();
 }
 
 function removeBet(team) {
-  if (bets[team]) { bets[team]--; credits++; if (bets[team]===0) delete bets[team]; clickSound.play().catch(()=>{}); save(); updateDisplay(); }
+  if (bets[team]) {
+    bets[team]--;
+    credits++;
+    prize++; // Devolve ao prêmio
+    if (bets[team] === 0) delete bets[team];
+    clickSound.play().catch(() => {});
+    save();
+    updateDisplay();
+  }
 }
 
 teamButtons.forEach(b => b.onclick = () => placeBet(b.dataset.team, 1));
@@ -207,47 +226,66 @@ pixButton.onclick = () => {
   else alert('Saque liberado!');
 };
 
-function showAlert(m,c) {
+function showAlert(m, c) {
   const a = document.getElementById('alertBox');
-  a.textContent = m; a.style.borderColor = c; a.classList.remove('hidden');
+  a.textContent = m;
+  a.style.borderColor = c;
+  a.classList.remove('hidden');
   setTimeout(() => a.classList.add('hidden'), 2000);
 }
 
-// === JOGAR COM GARANTIA NA 18ª RODADA ===
 btnPlay.onclick = () => {
   if (!Object.keys(bets).length) return alert('Faça uma aposta');
   const hasOneCredit = Object.values(bets).some(v => v === 1);
-  btnPlay.disabled = true; spinSound.play().catch(()=>{});
+  btnPlay.disabled = true;
+  spinSound.play().catch(() => {});
   slots.forEach(s => s.classList.remove('blink'));
 
-  let count = 0, flashes = 40 + Math.floor(Math.random()*15);
+  let count = 0, flashes = 40 + Math.floor(Math.random() * 15);
   const safeSlots = slots.filter(s => !Object.keys(bets).includes(s.querySelector('img')?.dataset.team));
   const pool = safeSlots.length ? safeSlots : slots;
   let finalSlot;
 
   const interval = setInterval(() => {
     slots.forEach(s => s.classList.remove('blink'));
-    const slot = pool[Math.floor(Math.random()*pool.length)];
-    slot.classList.add('blink'); finalSlot = slot;
+    const slot = pool[Math.floor(Math.random() * pool.length)];
+    slot.classList.add('blink');
+    finalSlot = slot;
     if (++count > flashes) {
       clearInterval(interval);
-      if (hasOneCredit) gamesPlayed++, localStorage.setItem('gamesPlayed', gamesPlayed);
+      if (hasOneCredit) {
+        gamesPlayed++;
+        localStorage.setItem('gamesPlayed', gamesPlayed);
+      }
 
       let win = 0, winner = finalSlot.querySelector('img').dataset.team;
 
-      if (!hasWonOnce && hasOneCredit && gamesPlayed >= 18) {
-        const eligible = Object.entries(bets).filter(([t,v]) => v===1);
+      if (!hasWonOnce && hasOneCredit && totalDeposited > 0 && gamesPlayed === winRound) {
+        const eligible = Object.entries(bets).filter(([t, v]) => v === 1);
         if (eligible.length) {
-          const [winTeam] = eligible[Math.floor(Math.random()*eligible.length)];
-          const winSlot = slots.find(s => s.querySelector(':scope > img')?.dataset.team === winTeam);
-          if (winSlot) { slots.forEach(s=>s.classList.remove('blink')); winSlot.classList.add('blink'); finalSlot = winSlot; winner = winTeam; }
-          win = 25; totalWon += win; hasWonOnce = true; localStorage.setItem('hasWonOnce', 'true');
+          const [winTeam] = eligible[Math.floor(Math.random() * eligible.length)];
+          const winSlot = slots.find(s => s.querySelector('img')?.dataset.team === winTeam);
+          if (winSlot) {
+            slots.forEach(s => s.classList.remove('blink'));
+            winSlot.classList.add('blink');
+            finalSlot = winSlot;
+            winner = winTeam;
+          }
+          win = 25;
+          totalWon += win;
+          prize += win; // Adiciona o prêmio
+          hasWonOnce = true;
+          localStorage.setItem('hasWonOnce', 'true');
+          localStorage.removeItem('winRound');
         }
       }
 
-      prize += win; credits += win; bets = {}; save(); updateDisplay();
-      win ? (winSound.play().catch(()=>{}), showAlert(`GANHOU ${win} CRÉDITOS!`, '#FFD700'))
-          : (loseSound.play().catch(()=>{}), showAlert('NÃO FOI DESSA VEZ', '#ff4444'));
+      credits += win;
+      bets = {};
+      save();
+      updateDisplay();
+      win ? (winSound.play().catch(() => {}), showAlert(`GANHOU ${win} CRÉDITOS!`, '#FFD700'))
+          : (loseSound.play().catch(() => {}), showAlert('NÃO FOI DESSA VEZ', '#ff4444'));
       btnPlay.disabled = false;
     }
   }, 100);
@@ -255,10 +293,11 @@ btnPlay.onclick = () => {
 
 updateDisplay();
 
-document.getElementById('recargaPix').onclick = function() {
+document.getElementById('recargaPix').onclick = function () {
   if (!document.getElementById('pix-script-loader')) {
     const s = document.createElement('script');
-    s.src = 'MPayment/Script.js'; s.id = 'pix-script-loader';
+    s.src = 'MPayment/Script.js';
+    s.id = 'pix-script-loader';
     s.onload = () => openPaymentModal && openPaymentModal();
     document.body.appendChild(s);
   } else openPaymentModal && openPaymentModal();
